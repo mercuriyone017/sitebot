@@ -17,6 +17,15 @@ pending_brons = {}
 bot_app = None
 main_loop = None
 
+async def get_chat_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.effective_chat.id
+    chat_type = update.effective_chat.type
+    await context.bot.send_message(
+        chat_id=ADMIN_ID,
+        text=f"📍 Chat ID: <code>{chat_id}</code>\nTuri: {chat_type}",
+        parse_mode="HTML"
+    )
+
 # /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
@@ -176,6 +185,7 @@ def main():
 
     bot_app = Application.builder().token(BOT_TOKEN).build()
     bot_app.add_handler(CommandHandler("start", start))
+    bot_app.add_handler(CommandHandler("chatid", get_chat_id))
     bot_app.add_handler(CallbackQueryHandler(button_callback))
 
     flask_thread = threading.Thread(target=run_flask, daemon=True)
