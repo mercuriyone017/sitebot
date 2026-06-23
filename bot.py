@@ -3,7 +3,7 @@ import time
 import requests
 import threading
 from flask import Flask, request, jsonify
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from flask import Flask, request, jsonify
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 import asyncio
 
