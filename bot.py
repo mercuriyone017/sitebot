@@ -11,6 +11,7 @@ from telegram.ext import (
 # =====================
 BOT_TOKEN = "8516151329:AAEHVVwBcj4fAm_WaNL6Rpb6uDW2vSxIeBA"
 ADMIN_ID = 824354773  # Sizning Telegram ID
+GROUP_ID = -1003790445484  # Mirage guruh ID
 
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -75,6 +76,13 @@ async def receive_bron(data: dict, application):
             reply_markup=reply_markup
         )
 
+        # Guruhga ham yuborish (tugmalarsiz)
+        await application.bot.send_message(
+            chat_id=GROUP_ID,
+            text=text + "\n\n⏳ <i>Admin ko'rib chiqmoqda...</i>",
+            parse_mode="HTML"
+        )
+
     elif bron_type == "turnir":
         bron_id = f"turnir_{data.get('telefon', 'unknown').replace('+', '').replace(' ', '')}_{int(__import__('time').time())}"
         pending_brons[bron_id] = data
@@ -103,6 +111,13 @@ async def receive_bron(data: dict, application):
             text=text,
             parse_mode="HTML",
             reply_markup=reply_markup
+        )
+
+        # Guruhga ham yuborish
+        await application.bot.send_message(
+            chat_id=GROUP_ID,
+            text=text + "\n\n⏳ <i>Admin ko'rib chiqmoqda...</i>",
+            parse_mode="HTML"
         )
 
 # =====================
@@ -161,6 +176,13 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         await query.edit_message_text(admin_text, parse_mode="HTML")
 
+        # Guruhga tasdiqlash xabari
+        await context.bot.send_message(
+            chat_id=GROUP_ID,
+            text=admin_text,
+            parse_mode="HTML"
+        )
+
         # Mijozga Telegram orqali xabar yuborish
         try:
             # Telefon raqamdan foydalanib Telegram'da qidirish
@@ -207,6 +229,13 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
 
         await query.edit_message_text(admin_text, parse_mode="HTML")
+
+        # Guruhga rad xabari
+        await context.bot.send_message(
+            chat_id=GROUP_ID,
+            text=admin_text,
+            parse_mode="HTML"
+        )
 
         try:
             await context.bot.send_message(
